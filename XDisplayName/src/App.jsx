@@ -21,7 +21,7 @@ function App() {
     if (fullName.firstName && fullName.lastName) {
       setDisplayName(true)
     }else{
-      console.log("invalid")
+      setDisplayName(false)
       return
     }
   }
