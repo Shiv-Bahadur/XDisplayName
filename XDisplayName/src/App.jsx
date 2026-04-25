@@ -1,70 +1,69 @@
-import { use, useState } from 'react'
+
 import './App.css'
+import { useState } from "react";
 
 function App() {
+  const [name, setName] = useState({
+    first: "",
+    last: "",
+  });
 
-  const [errors, setErrors] = useState({ firstName: "", lastName: "" })
-  const [fullName, setFullName] = useState({
-    firstName: "",
-    lastName: "",
-  })
-  const [displayName, setDisplayName] = useState("");
-  const [showName,setShowName]=useState(false)
+  const [submittedName, setSubmittedName] = useState(null);
 
   const handleChange = (e) => {
-    const { name, value } = e.target
-    setFullName((prev) => ({ ...prev, [name]: value }))
+    const { name: fieldName, value } = e.target;
 
-     setErrors((prev) => ({
+    setName((prev) => ({
       ...prev,
-      [name]: "",
+      [fieldName]: value,
     }));
-  }
+  };
 
   const handleSubmit = (e) => {
+    e.preventDefault();
 
-    e.preventDefault()
-    let newErrors = { firstName: "", lastName: "" }
-
-    if (!fullName.firstName.trim()) {
-      newErrors.firstName = "Please fill out this field"
-    }
-    if (!fullName.lastName.trim()) {
-      newErrors.lastName = "Please fill out this field"
-    }
-    setErrors(newErrors);
-    if (!newErrors.firstName && !newErrors.lastName) {
-      setDisplayName(fullName.firstName + " " + fullName.lastName)
-      setShowName(true)
-    } else {
-      setDisplayName("")
-      setShowName(false)
-    }
-  }
+    // Save submitted values separately
+    setSubmittedName(name);
+  };
 
   return (
-    <>
-      <div>
-        <h1>Full Name Display</h1><br />
-        <form onSubmit={handleSubmit}>
-          <label htmlFor='firstName'>First Name:</label>
-          <input type='text' name='firstName' value={fullName.firstName} id='firstName' onChange={handleChange} />
-          {errors.firstName && <p style={{ color: 'red' }}>{errors.firstName}</p>}
-          <br />
-          <label htmlFor="lastName">Last Name:</label>
-          <input type='text' name='lastName' value={fullName.lastName} id='lastName' onChange={handleChange} />
-          {errors.lastName && <p style={{ color: 'red' }}>{errors.lastName}</p>}
-          <br />
-          <button type='submit'>Submit</button>
-        </form>
+    <div style={{ padding: "20px" }}>
+      <h1>Full Name Display</h1>
+
+      <form onSubmit={handleSubmit}>
         <div>
-          {
-            showName && <h2>Full Name: {displayName}</h2>
-          }
+          <label>First Name: </label>
+          <input
+            type="text"
+            name="first"
+            value={name.first}
+            onChange={handleChange}
+            required
+          />
         </div>
-      </div>
-    </>
-  )
+
+        <div>
+          <label>Last Name: </label>
+          <input
+            type="text"
+            name="last"
+            value={name.last}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <button type="submit">Submit</button>
+      </form>
+
+      {/* Show only after submit */}
+      {submittedName && (
+        <p>
+          Full Name: {submittedName.first} {submittedName.last}
+        </p>
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;
