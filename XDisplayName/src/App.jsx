@@ -22,7 +22,6 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Save submitted values separately
     setSubmittedName(name);
   };
 
@@ -55,8 +54,7 @@ function App() {
 
         <button type="submit">Submit</button>
       </form>
-
-      {/* Show only after submit */}
+      
       {submittedName && (
         <p>
           Full Name: {submittedName.first} {submittedName.last}
